@@ -11,7 +11,7 @@ class Resultado extends Component {
 
         return (
             <React.Fragment>
-                <div className="col-12 p-5 row">
+                <div id="resultado" className="col-12 p-5 row">
                     {this.props.imagenes.map(imagen => (
                         <Imagen
                             key={imagen.id}

@@ -37,7 +37,7 @@ class App extends Component {
         let pagina = this.state.pagina;
 
         // Si es la página 1, ya no podemos retroceder
-        if (pagina ===1 ) return null;
+        if (pagina === 1) return null;
 
         // Restar a la página actual
         pagina -= 1;
@@ -45,6 +45,9 @@ class App extends Component {
         // Agregar al state
         this.setState({
             pagina
+        }, () => {
+            this.consultarApi();
+            this.scroll();
         });
 
         // console.log(pagina);
@@ -61,9 +64,17 @@ class App extends Component {
         // Agregar al state
         this.setState({
             pagina
+        }, () => {
+            this.consultarApi();
+            this.scroll();
         });
 
         // console.log(pagina);
+    };
+
+    scroll = () => {
+        const elemento = document.querySelector('#resultado');
+        elemento.scrollIntoView('auto', 'start');
     };
 
     render() {
