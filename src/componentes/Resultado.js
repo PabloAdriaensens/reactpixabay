@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Imagen from "./Imagen";
+import Navegacion from "./Navegacion";
 
 class Resultado extends Component {
 
@@ -18,6 +19,9 @@ class Resultado extends Component {
                         />
                     ))}
                 </div>
+                <Navegacion
+
+                />
             </React.Fragment>
         )
     };

@@ -35,7 +35,7 @@ class App extends Component {
                         datosBusqueda={this.datosBusqueda}
                     />
                 </div>
-                <div className="row">
+                <div className="row justify-content-center">
                     <Resultado
                         imagenes={this.state.imagenes}
                     />
