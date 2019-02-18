@@ -9,7 +9,8 @@ class App extends Component {
         termino: '',
         imagenes: [],
         pagina: '',
-        cargando: false
+        cargando: false,
+        totalPaginas: ''
     };
 
     consultarApi = async () => {
@@ -28,10 +29,14 @@ class App extends Component {
             })
             // El timeout no es necesario... solo lo utilizamos para simular
             .then(resultado => {
+                console.log(resultado.totalHits);
+                const totalPaginacion = Math.ceil(resultado.totalHits / 30);
+
                 setTimeout(() => {
                     this.setState({
                         imagenes: resultado.hits,
-                        cargando: false
+                        cargando: false,
+                        totalPaginas: totalPaginacion
                     })
                 }, 500);
             })
@@ -71,7 +76,10 @@ class App extends Component {
     paginaSiguiente = () => {
 
         // Leemos el state
-        let pagina = this.state.pagina;
+        let {pagina }= this.state;
+        const {totalPaginas} = this.state;
+
+        if (pagina === totalPaginas) return null;
 
         // Sumar a la página actual
         pagina += 1;
@@ -108,6 +116,8 @@ class App extends Component {
                 imagenes={this.state.imagenes}
                 paginaAnterior={this.paginaAnterior}
                 paginaSiguiente={this.paginaSiguiente}
+                pagina={this.state.pagina}
+                totalPaginas={this.state.totalPaginas}
             />
         }
 
