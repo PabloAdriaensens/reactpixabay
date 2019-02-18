@@ -1,25 +1,40 @@
 import React, {Component} from 'react';
 import Buscador from "./componentes/Buscador";
 import Resultado from "./componentes/Resultado";
+import './css/App.css'
 
 class App extends Component {
 
     state = {
         termino: '',
         imagenes: [],
-        pagina: ''
+        pagina: '',
+        cargando: false
     };
 
-    consultarApi = () => {
+    consultarApi = async () => {
         const termino = this.state.termino;
         const pagina = this.state.pagina;
         const url = `https://pixabay.com/api/?key=11641811-3abf9954337f75e26113e414c&q=${termino}&per_page=30&page=${pagina}`;
 
         console.log(url);
 
-        fetch(url)
-            .then(respuesta => respuesta.json())
-            .then(resultado => this.setState({imagenes: resultado.hits}))
+        await fetch(url)
+            .then(respuesta => {
+                this.setState({
+                    cargando: true
+                });
+                return respuesta.json()
+            })
+            // El timeout no es necesario... solo lo utilizamos para simular
+            .then(resultado => {
+                setTimeout(() => {
+                    this.setState({
+                        imagenes: resultado.hits,
+                        cargando: false
+                    })
+                }, 500);
+            })
     };
 
     datosBusqueda = (termino) => {
@@ -78,6 +93,24 @@ class App extends Component {
     };
 
     render() {
+
+        const cargando = this.state.cargando;
+
+        let resultado;
+
+        if (cargando) {
+            resultado = <div className="spinner">
+                <div className="double-bounce1"></div>
+                <div className="double-bounce2"></div>
+            </div>
+        } else {
+            resultado = <Resultado
+                imagenes={this.state.imagenes}
+                paginaAnterior={this.paginaAnterior}
+                paginaSiguiente={this.paginaSiguiente}
+            />
+        }
+
         return (
             <div className="app container">
                 <div className="jumbotron">
@@ -87,11 +120,7 @@ class App extends Component {
                     />
                 </div>
                 <div className="row justify-content-center">
-                    <Resultado
-                        imagenes={this.state.imagenes}
-                        paginaAnterior={this.paginaAnterior}
-                        paginaSiguiente={this.paginaSiguiente}
-                    />
+                    {resultado}
                 </div>
             </div>
         );
